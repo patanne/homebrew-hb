@@ -4,7 +4,7 @@ class HbPythonBootstrap < Formula
 	url "http://san.customer.hb/repos.hb/macos/hb-python-bootstrap.tar.gz"
 	sha256 "dbb3dde0182335a087454ca8c6e355720d27a7144defa2f5bd5cae28256c9ce8"
 	version "0.0.1"
-	revision 20
+	revision 21
   
 	depends_on "curl"
 
@@ -12,6 +12,10 @@ class HbPythonBootstrap < Formula
 
 	def sitepackages34
 		prefix/"lib/python3.4/site-packages"
+	end
+
+	def sitepackages36live
+		HOMEBREW_PREFIX/"lib/python3.4/site-packages"
 	end
 
 	def sitepackages36
@@ -26,13 +30,17 @@ class HbPythonBootstrap < Formula
 		prefix/"lib/python3.7/site-packages"
 	end
 
+	def sitepackages36live
+		HOMEBREW_PREFIX/"lib/python3.7/site-packages"
+	end
+
 	def install
 		lib.install "hb-python-bootstrap"
 		libexec.install "sitecustomize.txt"
 
 #		puts sitepackages36
 
-		if Dir.exist?(HOMEBREW_PREFIX/"lib/python3.4/site-packages")
+		if sitepackages34live.exist?
 			sitepackages34.install_symlink libexec/"sitecustomize.txt"
 		end
 
@@ -40,9 +48,11 @@ class HbPythonBootstrap < Formula
 			sitepackages36.install_symlink libexec/"sitecustomize.txt" => "sitecustomize.py"
 		end
 
-		if Dir.exist?(HOMEBREW_PREFIX/"lib/python3.7/site-packages")
-#			if File.exist?()
-			sitepackages37.install_symlink libexec/"sitecustomize.txt"
+		if sitepackages37live.exist?
+			if File.exist?(sitepackages37live/"sitecustomize.py")
+				mv sitepackages37live/"sitecustomize.py" sitepackages37live/"sitecustomize.brew.py"
+			end
+			sitepackages37.install_symlink libexec/"sitecustomize.txt" => "sitecustomize.py"
 		end
 #		lib.install Dir["*"]
 	end
