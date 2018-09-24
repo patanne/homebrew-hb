@@ -1,8 +1,8 @@
-class Python36 < Formula
+class Python34 < Formula
   desc "Interpreted, interactive, object-oriented programming language"
   homepage "https://www.python.org/"
-  url "https://www.python.org/ftp/python/3.6.6/Python-3.6.6.tar.xz"
-  sha256 "d79bc15d456e73a3173a2938f18a17e5149c850ebdedf84a78067f501ee6e16f"
+  url "https://www.python.org/ftp/python/3.4.9/Python-3.4.9.tar.xz"
+  sha256 "59629676ba2b01a798f5211d8f63c26ee52f1d5133cf37583e0bf1bad50c2bd9"
 #  revision 2
 
   head do
