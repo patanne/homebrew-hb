@@ -3,6 +3,7 @@ class Python36 < Formula
   homepage "https://www.python.org/"
   url "https://www.python.org/ftp/python/3.6.6/Python-3.6.6.tar.xz"
   sha256 "d79bc15d456e73a3173a2938f18a17e5149c850ebdedf84a78067f501ee6e16f"
+  revision 1
 
   head do
     url "https://github.com/python/cpython.git"
@@ -104,19 +105,6 @@ class Python36 < Formula
     # Avoid linking to libgcc https://mail.python.org/pipermail/python-dev/2012-February/116205.html
     args << "MACOSX_DEPLOYMENT_TARGET=#{MacOS.version}"
 
-    # We want our readline and openssl! This is just to outsmart the detection code,
-    # superenv makes cc always find includes/libs!
-    inreplace "setup.py" do |s|
-      s.gsub! "do_readline = self.compiler.find_library_file(lib_dirs, 'readline')",
-              "do_readline = '#{Formula["ureadline"].opt_lib}/libhistory.dylib'"
-      s.gsub! "/usr/local/ssl", Formula["uopenssl"].opt_prefix
-    end
-
-    inreplace "setup.py" do |s|
-      s.gsub! "sqlite_setup_debug = False", "sqlite_setup_debug = True"
-      s.gsub! "for d_ in inc_dirs + sqlite_inc_paths:",
-              "for d_ in ['#{Formula["usqlite"].opt_include}']:"
-    end
 
     # Allow python modules to use ctypes.find_library to find homebrew's stuff
     # even if homebrew is not a /usr/local/lib. Try this with:
