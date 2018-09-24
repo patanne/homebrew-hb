@@ -1,4 +1,4 @@
-class HBootstrap < Formula
+class HbPythonBootstrap < Formula
 	desc "hb-python-bootstrap"
 	homepage "https://github.com/"
 	url "http://san.customer.hb/repos.hb/macos/hb-python-bootstrap.tar.gz"
