@@ -4,7 +4,7 @@ class HbPythonBootstrap < Formula
 	url "http://san.customer.hb/repos.hb/macos/hb-python-bootstrap.tar.gz"
 	sha256 "dbb3dde0182335a087454ca8c6e355720d27a7144defa2f5bd5cae28256c9ce8"
 	version "0.0.1"
-	revision 22
+	revision 23
   
 	depends_on "curl"
 
@@ -14,7 +14,7 @@ class HbPythonBootstrap < Formula
 		prefix/"lib/python3.4/site-packages"
 	end
 
-	def sitepackages36live
+	def sitepackages34live
 		HOMEBREW_PREFIX/"lib/python3.4/site-packages"
 	end
 
@@ -30,7 +30,7 @@ class HbPythonBootstrap < Formula
 		prefix/"lib/python3.7/site-packages"
 	end
 
-	def sitepackages36live
+	def sitepackages37live
 		HOMEBREW_PREFIX/"lib/python3.7/site-packages"
 	end
 
