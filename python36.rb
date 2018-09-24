@@ -3,48 +3,50 @@ class Python36 < Formula
   homepage "https://www.python.org/"
   url "https://www.python.org/ftp/python/3.6.6/Python-3.6.6.tar.xz"
   sha256 "d79bc15d456e73a3173a2938f18a17e5149c850ebdedf84a78067f501ee6e16f"
-  revision 1
+  revision 2
 
   head do
     url "https://github.com/python/cpython.git"
 
     resource "blurb" do
-      url "https://pypi.org/packages/source/b/blurb/blurb-1.0.6.tar.gz"
+      url "https://files.pythonhosted.org/packages/f2/2d/541cf1d8054dbb320aca5e9dcce5d66efb227be9adb75d2697ee45d1f742/blurb-1.0.6.tar.gz"
       sha256 "90c7d2e5d141d7d1fc6ca0fe660025317ac81ca078e6045c46b1bc5a675ce5d1"
     end
   end
 
-  keg_only :versioned_formula
-
-  option :universal
-
+  option "with-tcl-tk", "Use Homebrew's Tk instead of macOS Tk (has optional Cocoa and threads support)"
   deprecated_option "with-brewed-tk" => "with-tcl-tk"
 
   depends_on "pkg-config" => :build
   depends_on "sphinx-doc" => :build
+  depends_on "gdbm"
+  depends_on "openssl"
+  depends_on "readline"
+  depends_on "sqlite"
+  depends_on "xz"
   depends_on "tcl-tk" => :optional
 
-  skip_clean "bin/pip3", "bin/pip-3.4", "bin/pip-3.5", "bin/pip-3.6"
-  skip_clean "bin/easy_install3", "bin/easy_install-3.4", "bin/easy_install-3.5", "bin/easy_install-3.6"
-
-  resource "setuptools" do
-    url "https://pypi.org/packages/source/s/setuptools/setuptools-40.2.0.zip"
-    sha256 "47881d54ede4da9c15273bac65f9340f8929d4f0213193fa7894be384f2dcfa6"
-  end
-
-  resource "pip" do
-    url "https://www.pypi.org/packages/source/p/pip/pip-18.0.tar.gz"
-    sha256 "a0e11645ee37c90b40c46d607070c4fd583e2cd46231b1c06e389c5e814eed76"
-  end
-
-  resource "wheel" do
-    url "https://pypi.org/packages/source/w/wheel/wheel-0.31.1.tar.gz"
-    sha256 "0a2e54558a0628f2145d2fc822137e322412115173e8a2ddbe1c9024338ae83c"
-  end
+  skip_clean "bin/pip3", "bin/pip-3.4", "bin/pip-3.5", "bin/pip-3.6", "bin/pip-3.7"
+  skip_clean "bin/easy_install3", "bin/easy_install-3.4", "bin/easy_install-3.5", "bin/easy_install-3.6", "bin/easy_install-3.7"
 
   fails_with :clang do
     build 425
     cause "https://bugs.python.org/issue24844"
+  end
+
+  resource "setuptools" do
+    url "https://files.pythonhosted.org/packages/c3/a8/a497f2f220fd51a714d0a466a32b8ec7d71dafbb053cb490a427b5fa2a1c/setuptools-40.4.1.zip"
+    sha256 "0565104c1fdc39cc28bcd8131e9d5af9eac6040168933a969f152a247ef59d11"
+  end
+
+  resource "pip" do
+    url "https://files.pythonhosted.org/packages/69/81/52b68d0a4de760a2f1979b0931ba7889202f302072cc7a0d614211bc7579/pip-18.0.tar.gz"
+    sha256 "a0e11645ee37c90b40c46d607070c4fd583e2cd46231b1c06e389c5e814eed76"
+  end
+
+  resource "wheel" do
+    url "https://files.pythonhosted.org/packages/2a/fb/aefe5d5dbc3f4fe1e815bcdb05cbaab19744d201bbc9b59cfa06ec7fc789/wheel-0.31.1.tar.gz"
+    sha256 "0a2e54558a0628f2145d2fc822137e322412115173e8a2ddbe1c9024338ae83c"
   end
 
   # Homebrew's tcl-tk is built in a standard unix fashion (due to link errors)
@@ -52,20 +54,7 @@ class Python36 < Formula
   # X11.
   patch :DATA if build.with? "tcl-tk"
 
-  # setuptools remembers the build flags python is built with and uses them to
-  # build packages later. Xcode-only systems need different flags.
-  pour_bottle? do
-    reason <<~EOS
-      The bottle needs the Apple Command Line Tools to be installed.
-        You can install them, if desired, with:
-          xcode-select --install
-    EOS
-    satisfy { MacOS::CLT.installed? }
-  end
-
   def install
-    ENV.permit_weak_imports
-
     # Unset these so that installing pip and setuptools puts them where we want
     # and not into some other Python the user has installed.
     ENV["PYTHONHOME"] = nil
@@ -83,6 +72,7 @@ class Python36 < Formula
       --enable-loadable-sqlite-extensions
       --without-ensurepip
       --with-dtrace
+      --with-openssl=#{Formula["openssl"].opt_prefix}
     ]
 
     args << "--without-gcc" if ENV.compiler == :clang
@@ -91,20 +81,33 @@ class Python36 < Formula
     ldflags  = []
     cppflags = []
 
-    unless MacOS::CLT.installed?
-      # Help Python's build system (setuptools/pip) to build things on Xcode-only systems
+    if MacOS.sdk_path_if_needed
+      # Help Python's build system (setuptools/pip) to build things on SDK-based systems
       # The setup.py looks at "-isysroot" to get the sysroot (and not at --sysroot)
-      cflags   << "-isysroot #{MacOS.sdk_path}"
-      ldflags  << "-isysroot #{MacOS.sdk_path}"
-      cppflags << "-I#{MacOS.sdk_path}/usr/include" # find zlib
+      cflags  << "-isysroot #{MacOS.sdk_path}"
+      ldflags << "-isysroot #{MacOS.sdk_path}"
+      cflags  << "-I/usr/include" # find zlib
       # For the Xlib.h, Python needs this header dir with the system Tk
       if build.without? "tcl-tk"
+        # Yep, this needs the absolute path where zlib needed
+        # a path relative to the SDK.
         cflags << "-I#{MacOS.sdk_path}/System/Library/Frameworks/Tk.framework/Versions/8.5/Headers"
       end
     end
     # Avoid linking to libgcc https://mail.python.org/pipermail/python-dev/2012-February/116205.html
     args << "MACOSX_DEPLOYMENT_TARGET=#{MacOS.version}"
 
+    # We want our readline! This is just to outsmart the detection code,
+    # superenv makes cc always find includes/libs!
+    inreplace "setup.py",
+      "do_readline = self.compiler.find_library_file(lib_dirs, 'readline')",
+      "do_readline = '#{Formula["readline"].opt_lib}/libhistory.dylib'"
+
+    inreplace "setup.py" do |s|
+      s.gsub! "sqlite_setup_debug = False", "sqlite_setup_debug = True"
+      s.gsub! "for d_ in inc_dirs + sqlite_inc_paths:",
+              "for d_ in ['#{Formula["sqlite"].opt_include}']:"
+    end
 
     # Allow python modules to use ctypes.find_library to find homebrew's stuff
     # even if homebrew is not a /usr/local/lib. Try this with:
@@ -125,17 +128,16 @@ class Python36 < Formula
     args << "CPPFLAGS=#{cppflags.join(" ")}" unless cppflags.empty?
 
     system "./configure", *args
-
     system "make"
 
     ENV.deparallelize do
       # Tell Python not to install into /Applications (default for framework builds)
-      system "make", "altinstall", "PYTHONAPPSDIR=#{prefix}"
+      system "make", "install", "PYTHONAPPSDIR=#{prefix}"
       system "make", "frameworkinstallextras", "PYTHONAPPSDIR=#{pkgshare}"
     end
 
     # Any .app get a " 3" attached, so it does not conflict with python 2.x.
-    Dir.glob("#{prefix}/*.app") { |app| mv app, app.sub(/\.app$/, " 3.6.app") }
+    Dir.glob("#{prefix}/*.app") { |app| mv app, app.sub(/\.app$/, " 3.app") }
 
     # Prevent third-party packages from building against fragile Cellar paths
     inreplace Dir[lib_cellar/"**/_sysconfigdata_m_darwin_darwin.py",
@@ -162,9 +164,6 @@ class Python36 < Formula
     # Symlink the pkgconfig files into HOMEBREW_PREFIX so they're accessible.
     (lib/"pkgconfig").install_symlink Dir["#{frameworks}/Python.framework/Versions/#{xy}/lib/pkgconfig/*"]
 
-    # Remove 2to3 because python2 also installs it
-    # rm bin/"2to3"
-
     # Remove the site-packages that Python created in its Cellar.
     (prefix/"Frameworks/Python.framework/Versions/#{xy}/lib/python#{xy}/site-packages").rmtree
 
@@ -183,6 +182,16 @@ class Python36 < Formula
 
       system "make", "html"
       doc.install Dir["build/html/*"]
+    end
+
+    # Install unversioned symlinks in libexec/bin.
+    {
+      "idle" => "idle3",
+      "pydoc" => "pydoc3",
+      "python" => "python3",
+      "python-config" => "python3-config",
+    }.each do |unversioned_name, versioned_name|
+      (libexec/"bin").install_symlink (bin/versioned_name).realpath => unversioned_name
     end
   end
 
@@ -217,7 +226,7 @@ class Python36 < Formula
 
     %w[setuptools pip wheel].each do |pkg|
       (libexec/pkg).cd do
-        system bin/"python3.6", "-s", "setup.py", "--no-user-cfg", "install",
+        system bin/"python3", "-s", "setup.py", "--no-user-cfg", "install",
                "--force", "--verbose", "--install-scripts=#{bin}",
                "--install-lib=#{site_packages}",
                "--single-version-externally-managed",
@@ -238,18 +247,15 @@ class Python36 < Formula
     end
 
     # post_install happens after link
-    %W[pip3.6 pip#{xy} easy_install-#{xy} wheel3].each do |e|
+    %W[pip3 pip#{xy} easy_install-#{xy} wheel3].each do |e|
       (HOMEBREW_PREFIX/"bin").install_symlink bin/e
     end
 
     # Help distutils find brewed stuff when building extensions
-    include_dirs = [HOMEBREW_PREFIX/"include", Formula["sqlite"].opt_include]
-    library_dirs = [HOMEBREW_PREFIX/"lib", Formula["sqlite"].opt_lib]
-
-    if build.with? "sqlite"
-      include_dirs << Formula["usqlite"].opt_include
-      library_dirs << Formula["usqlite"].opt_lib
-    end
+    include_dirs = [HOMEBREW_PREFIX/"include", Formula["openssl"].opt_include,
+                    Formula["sqlite"].opt_include]
+    library_dirs = [HOMEBREW_PREFIX/"lib", Formula["openssl"].opt_lib,
+                    Formula["sqlite"].opt_lib]
 
     if build.with? "tcl-tk"
       include_dirs << Formula["tcl-tk"].opt_include
@@ -312,15 +318,24 @@ class Python36 < Formula
     if prefix.exist?
       xy = (prefix/"Frameworks/Python.framework/Versions").children.min.basename.to_s
     else
-      xy = version.to_s.slice(/(3\.\d)/) || "3.6"
+      xy = version.to_s.slice(/(3\.\d)/) || "3.7"
     end
     text = <<~EOS
-      Pip, setuptools, and wheel have been installed. To update them
+      Python has been installed as
+        #{HOMEBREW_PREFIX}/bin/python3
+
+      Unversioned symlinks `python`, `python-config`, `pip` etc. pointing to
+      `python3`, `python3-config`, `pip3` etc., respectively, have been installed into
+        #{opt_libexec}/bin
+
+      If you need Homebrew's Python 2.7 run
+        brew install python@2
+
+      Pip, setuptools, and wheel have been installed. To update them run
         pip3 install --upgrade pip setuptools wheel
 
       You can install Python packages with
         pip3 install <package>
-
       They will install into the site-package directory
         #{HOMEBREW_PREFIX/"lib/python#{xy}/site-packages"}
 
@@ -346,7 +361,7 @@ class Python36 < Formula
     # Check if some other modules import. Then the linked libs are working.
     system "#{bin}/python#{xy}", "-c", "import tkinter; root = tkinter.Tk()"
     system "#{bin}/python#{xy}", "-c", "import _gdbm"
-    system bin/"pip3.6", "list"
+    system bin/"pip3", "list", "--format=columns"
   end
 end
 
