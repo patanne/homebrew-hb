@@ -25,15 +25,15 @@ class HbPythonBootstrap < Formula
 	def install
 		lib.install "hb-python-bootstrap"
 
-		if sitepackages34.exist?
+		if Dir.exist?(sitepackages34)
 			sitepackages34.install "sitecustomize.txt"
 		end
 
-		if sitepackages36.exist?
+		if Dir.exist?(sitepackages36)
 			sitepackages36.install "sitecustomize.txt"
 		end
 
-		if sitepackages37.exist?
+		if Dir.exist?(sitepackages37)
 			sitepackages37.install "sitecustomize.txt"
 		end
 #		lib.install Dir["*"]
