@@ -10,8 +10,8 @@ class HbPythonBootstrap < Formula
 
 	bottle :unneeded
 
-#	def install
-#		lib.install "hb-python-bootstrap"
-#	end
+	def install
+		lib.install Dir["*"]
+	end
   end
   
