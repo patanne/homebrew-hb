@@ -3,7 +3,6 @@ class Python34 < Formula
   homepage "https://www.python.org/"
   url "https://www.python.org/ftp/python/3.4.9/Python-3.4.9.tar.xz"
   sha256 "59629676ba2b01a798f5211d8f63c26ee52f1d5133cf37583e0bf1bad50c2bd9"
-#  revision 2
 
   head do
     url "https://github.com/python/cpython.git"
@@ -214,7 +213,8 @@ class Python34 < Formula
 
     # Write our sitecustomize.py
     rm_rf Dir["#{site_packages}/sitecustomize.py[co]"]
-    (site_packages/"sitecustomize.py").atomic_write(sitecustomize)
+    # HB change the name to sitecustomize.brew.py
+    (site_packages/"sitecustomize.brew.py").atomic_write(sitecustomize)
 
     # Remove old setuptools installations that may still fly around and be
     # listed in the easy_install.pth. This can break setuptools build with
