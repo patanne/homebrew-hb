@@ -4,7 +4,7 @@ class HbPythonBootstrap < Formula
 	url "http://san.customer.hb/repos.hb/macos/hb-python-bootstrap.tar.gz"
 	sha256 "dbb3dde0182335a087454ca8c6e355720d27a7144defa2f5bd5cae28256c9ce8"
 	version "0.0.1"
-	revision 26
+	revision 27
   
 	depends_on "curl"
 
@@ -52,7 +52,7 @@ class HbPythonBootstrap < Formula
 			# this line fails with...
 			# Errno::EPERM: Operation not permitted @ rb_file_s_rename - (/usr/local/lib/python3.7/site-packages/sitecustomize.py, /usr/local/lib/python3.7/site-packages/sitecustomize.brew.py)
 #			mv sitepackages37live/"sitecustomize.py", sitepackages37live/"sitecustomize.brew.py" if File.exist?(sitepackages37live/"sitecustomize.py")
-			system "whomai"
+			system "whoami"
 			system "mv", "#{sitepackages37live}/sitecustomize.py", "#{sitepackages37live}/sitecustomize.brew.py" if File.exist?(sitepackages37live/"sitecustomize.py")
 			sitepackages37.install_symlink libexec/"sitecustomize.txt" => "sitecustomize.py"
 		end
