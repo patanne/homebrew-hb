@@ -1,10 +1,10 @@
 class HbPythonBootstrap < Formula
-	desc "hb-python-bootstrap"
+	desc "hb-python-bootstrap, the directory version"
 	homepage "https://github.com/"
 	url "http://san.customer.hb/repos.hb/macos/hb-python-bootstrap.tar.gz"
 	sha256 "e4e09b8ebaaeacd323e888a6799ef084c01fafe4f903c55dc8a3f45093850ebc"
 	version "0.0.1"
-	revision 4
+	revision 5
   
 	depends_on "curl"
 	depends_on "python37"
