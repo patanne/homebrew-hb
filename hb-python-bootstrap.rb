@@ -1,8 +1,8 @@
-class HbPythonBootstrapDir < Formula
-	desc "hb-python-bootstrap, the directory version"
+class HbPythonBootstrap < Formula
+	desc "hb-python-bootstrap, the zip version"
 	homepage "https://github.com/"
-	url "http://san.customer.hb/repos.hb/macos/hb-python-bootstrap-dir.tar.gz"
-	sha256 "2d1c979ef99f564c8745408ec96c0a2e03512243168fa7317af6ef45ccd630fe"
+	url "http://san.customer.hb/repos.hb/macos/hb-python-bootstrap.tar.gz"
+	sha256 "435cca311d8e06fb9f666c57299bb761d312ce71238043068620310577bc121f"
 	version "0.0.1"
 	revision 0
   
@@ -36,7 +36,7 @@ class HbPythonBootstrapDir < Formula
 	end
 
 	def install
-		lib.install "hb-python-bootstrap.zip"
+		lib.install "hb-python-bootstrap"
 		libexec.install "sitecustomize.py"
 
 #		puts sitepackages36
