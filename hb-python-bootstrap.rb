@@ -4,7 +4,7 @@ class HbPythonBootstrap < Formula
 	url "http://san.customer.hb/repos.hb/macos/hb-python-bootstrap.tar.gz"
 	sha256 "435cca311d8e06fb9f666c57299bb761d312ce71238043068620310577bc121f"
 	version "0.0.1"
-	revision 0
+	revision 1
   
 	depends_on "curl"
 	depends_on "python37"
@@ -36,7 +36,7 @@ class HbPythonBootstrap < Formula
 	end
 
 	def install
-		lib.install "hb-python-bootstrap"
+		lib.install "hb-python-bootstrap.zip"
 		libexec.install "sitecustomize.py"
 
 #		puts sitepackages36
