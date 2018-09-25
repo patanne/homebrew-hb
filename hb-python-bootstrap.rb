@@ -2,9 +2,9 @@ class HbPythonBootstrap < Formula
 	desc "hb-python-bootstrap"
 	homepage "https://github.com/"
 	url "http://san.customer.hb/repos.hb/macos/hb-python-bootstrap.tar.gz"
-	sha256 "dbb3dde0182335a087454ca8c6e355720d27a7144defa2f5bd5cae28256c9ce8"
-	version "0.0.1"
-	revision 28
+	sha256 "2e428cb6f5ab4c00612f0fc7ff40aff8e9768c461431e5767efd5f6efcf921e9"
+	version "0.0.2"
+	#revision 28
   
 	depends_on "curl"
 	depends_on "python37"
@@ -42,11 +42,11 @@ class HbPythonBootstrap < Formula
 #		puts sitepackages36
 
 		if sitepackages34live.exist?
-			sitepackages34.install_symlink libexec/"sitecustomize.txt"
+			sitepackages34.install_symlink libexec/"sitecustomize.py"
 		end
 
 		if sitepackages36live.exist?
-			sitepackages36.install_symlink libexec/"sitecustomize.txt" => "sitecustomize.py"
+			sitepackages36.install_symlink libexec/"sitecustomize.py" => "sitecustomize.py"
 		end
 
 		if sitepackages37live.exist?
@@ -55,7 +55,7 @@ class HbPythonBootstrap < Formula
 #			mv sitepackages37live/"sitecustomize.py", sitepackages37live/"sitecustomize.brew.py" if File.exist?(sitepackages37live/"sitecustomize.py")
 #			system "mv", "#{sitepackages37live}/sitecustomize.py", "#{sitepackages37live}/sitecustomize.brew.py" if File.exist?(sitepackages37live/"sitecustomize.py")
 #			system "whoami"
-			sitepackages37.install_symlink libexec/"sitecustomize.txt" => "sitecustomize.py"
+			sitepackages37.install_symlink libexec/"sitecustomize.py" => "sitecustomize.py"
 		end
 	end
   end
