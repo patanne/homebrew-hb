@@ -37,7 +37,7 @@ class HbPythonBootstrap < Formula
 
 	def install
 		lib.install "hb-python-bootstrap"
-		libexec.install "sitecustomize.txt"
+		libexec.install "sitecustomize.py"
 
 #		puts sitepackages36
 
