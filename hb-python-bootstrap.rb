@@ -4,7 +4,7 @@ class HbPythonBootstrap < Formula
 	url "http://san.customer.hb/repos.hb/macos/hb-python-bootstrap.tar.gz"
 	sha256 "2e428cb6f5ab4c00612f0fc7ff40aff8e9768c461431e5767efd5f6efcf921e9"
 	version "0.0.2"
-	#revision 28
+	revision 1
   
 	depends_on "curl"
 	depends_on "python37"
