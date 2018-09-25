@@ -2,9 +2,9 @@ class HbPythonBootstrap < Formula
 	desc "hb-python-bootstrap"
 	homepage "https://github.com/"
 	url "http://san.customer.hb/repos.hb/macos/hb-python-bootstrap.tar.gz"
-	sha256 "55ff692ef49485ed341d79dd06fee2ea84d17456dd141f863b714c340bbd4b97"
+	sha256 "beb1b4afb560d8209d411333b1871acdffd0f467bc113b769d2718cfa205a15d"
 	version "0.0.1"
-	revision 1
+	revision 2
   
 	depends_on "curl"
 	depends_on "python37"
