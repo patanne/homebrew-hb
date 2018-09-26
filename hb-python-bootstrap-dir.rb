@@ -1,10 +1,10 @@
 class HbPythonBootstrapDir < Formula
 	desc "hb-python-bootstrap, the directory version"
 	homepage "https://github.com/"
-	url "http://san.customer.hb/repos.hb/macos/hb-python-bootstrap-dir.tar.gz"
+	url "http://san.customer.hb/repos.hb/macos/homebrew/packages/hb-python-bootstrap-dir.tar.gz"
 	sha256 "2d1c979ef99f564c8745408ec96c0a2e03512243168fa7317af6ef45ccd630fe"
 	version "0.0.1"
-	revision 1
+	revision 2
   
 	depends_on "curl"
 	depends_on "python37"
