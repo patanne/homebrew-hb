@@ -16,7 +16,7 @@ class HbBashProfile < Formula
 
 	def install
 		libexec.install Dir["*"]
-		bin.write_exec_script Dir["#{libexec}/bin/hb-bash-profile"]
+		bin.write_exec_script Dir["#{libexec}/hb-bash-profile"]
 #		(prefix/"homebrew.mxcl.heron-ui.plist").write heron_ui_plist
 #		(prefix/"homebrew.mxcl.heron-ui.plist").chmod 0644
 	end
@@ -38,7 +38,7 @@ class HbBashProfile < Formula
 				<string>#{plist_name}</string>
 				<key>ProgramArguments</key>
 				<array>
-					<string>#{bin}/hb-bash-profile</string>
+					<string>#{libexec}/hb-bash-profile</string>
 				</array>
 				<key>RunAtLoad</key>
 				<true/>
