@@ -7,16 +7,21 @@ class HbBashProfile < Formula
 	desc "A realtime, distributed, fault-tolerant stream processing engine from Twitter"
 	homepage "https://github.com/"
 	url "http://san.customer.hb/repos.hb/macos/homebrew/packages/hb-bash-profile.tar.gz"
-	sha256 "331a858b26db96152891d7ff563fefb08375c9f3fd25bedaa1b4762144bbf83b"
+	sha256 "c9399ea153479b384b2de68536d56cf28759901f1db8a20c37d95d5c300abbcb"
 	version "0.0.0"
-	revision 4
+	revision 6
 
 	bottle :unneeded
 
-
+	def hbLogFolder
+		var/"log/hb"
+	end
+		
 	def install
 		libexec.install Dir["*"]
-		bin.write_exec_script Dir["#{libexec}/hb-bash-profile"]
+		bin.write_exec_script Dir["#{libexec}/hb-bash-profile-la"]
+
+		var.mkdir "log/hb" unless hbLogFolder.exist?
 #		(prefix/"homebrew.mxcl.heron-ui.plist").write heron_ui_plist
 #		(prefix/"hb-bash-profile").chmod 0644
 	end
@@ -45,9 +50,9 @@ class HbBashProfile < Formula
 				<key>WorkingDirectory</key>
 				<string>#{var}</string>
 				<key>StandardErrorPath</key>
-				<string>#{var}/log/hb-bash-profile.log</string>
+				<string>#{var}/log/hb/hb-bash-profile.log</string>
 				<key>StandardOutPath</key>
-				<string>#{var}/log/hb-bash-profile.log</string>
+				<string>#{var}/log/hb/hb-bash-profile.log</string>
 			</dict>
 		</plist>
 		EOS
