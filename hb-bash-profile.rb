@@ -18,7 +18,7 @@ class HbBashProfile < Formula
 		libexec.install Dir["*"]
 		bin.write_exec_script Dir["#{libexec}/hb-bash-profile"]
 #		(prefix/"homebrew.mxcl.heron-ui.plist").write heron_ui_plist
-#		(prefix/"homebrew.mxcl.heron-ui.plist").chmod 0644
+		(prefix/"homebrew.mxcl.hb-bash-profile.plist").chmod 0644
 	end
 
 	def caveats; <<~EOS
