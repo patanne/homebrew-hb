@@ -9,7 +9,7 @@ class HbBashProfile < Formula
 	url "http://san.customer.hb/repos.hb/macos/homebrew/packages/hb-bash-profile.tar.gz"
 	sha256 "c9399ea153479b384b2de68536d56cf28759901f1db8a20c37d95d5c300abbcb"
 	version "0.0.0"
-	revision 6
+	revision 7
 
 	bottle :unneeded
 
@@ -21,7 +21,9 @@ class HbBashProfile < Formula
 		libexec.install Dir["*"]
 		bin.write_exec_script Dir["#{libexec}/hb-bash-profile-la"]
 
-		var.mkdir "log/hb" unless hbLogFolder.exist?
+		if hbLogFolder.exist?
+			system "mkdir", "-p", "#{var}/log/hb" 
+		end 
 #		(prefix/"homebrew.mxcl.heron-ui.plist").write heron_ui_plist
 #		(prefix/"hb-bash-profile").chmod 0644
 	end
