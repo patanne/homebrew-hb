@@ -38,7 +38,7 @@ class HbBashProfile < Formula
 				<string>#{plist_name}</string>
 				<key>ProgramArguments</key>
 				<array>
-					<string>#{opt_bin}/heron-tracker</string>
+					<string>#{bin}/hb-bash-profile</string>
 				</array>
 				<key>RunAtLoad</key>
 				<true/>
