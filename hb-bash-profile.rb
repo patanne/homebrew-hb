@@ -7,9 +7,9 @@ class HbBashProfile < Formula
 	desc "A realtime, distributed, fault-tolerant stream processing engine from Twitter"
 	homepage "https://github.com/"
 	url "http://san.customer.hb/repos.hb/macos/homebrew/packages/hb-bash-profile.tar.gz"
-	sha256 "686bc26a47caf473d3e2d6671d44dcdfbe6709cf604d8da6849e890e37dbf72f"
+	sha256 "c0bb5c31cac2631fc73999e68d705731068600ecabab91bfd89695fd6baeaba2"
 	version "0.0.0"
-	revision 1
+	revision 2
 
 	bottle :unneeded
 
