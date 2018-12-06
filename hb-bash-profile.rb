@@ -7,9 +7,9 @@ class HbBashProfile < Formula
 	desc "A realtime, distributed, fault-tolerant stream processing engine from Twitter"
 	homepage "https://github.com/"
 	url "http://san.customer.hb/repos.hb/macos/homebrew/packages/hb-bash-profile.tar.gz"
-	sha256 "08a4768c93dcd58c7407f66ca43e3096dc7d6402fce7c9a1164b397a3ba44e18"
+	sha256 "331a858b26db96152891d7ff563fefb08375c9f3fd25bedaa1b4762144bbf83b"
 	version "0.0.0"
-	revision 3
+	revision 4
 
 	bottle :unneeded
 
@@ -18,7 +18,7 @@ class HbBashProfile < Formula
 		libexec.install Dir["*"]
 		bin.write_exec_script Dir["#{libexec}/hb-bash-profile"]
 #		(prefix/"homebrew.mxcl.heron-ui.plist").write heron_ui_plist
-		(prefix/"homebrew.mxcl.hb-bash-profile.plist").chmod 0644
+#		(prefix/"hb-bash-profile").chmod 0644
 	end
 
 	def caveats; <<~EOS
