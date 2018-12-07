@@ -34,7 +34,7 @@ class HbBashProfile < Formula
 			brew services start hb-bash-profile
 			
 		To create bash profile for all users
-			brew services --lla start hb-bash-profile
+			sudo brew services --lla start hb-bash-profile
 		EOS
 	end
 
