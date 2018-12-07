@@ -49,7 +49,7 @@ class HbBashProfile < Formula
 				<string>#{plist_name}</string>
 				<key>ProgramArguments</key>
 				<array>
-					<string>#{libexec}/hb-bash-profile-lr</string>
+					<string>#{libexec}/hb-bash-profile-la</string>
 				</array>
 				<key>RunAtLoad</key>
 				<true/>
