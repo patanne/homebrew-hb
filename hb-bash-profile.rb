@@ -7,9 +7,9 @@ class HbBashProfile < Formula
 	desc "A realtime, distributed, fault-tolerant stream processing engine from Twitter"
 	homepage "https://github.com/"
 	url "http://san.customer.hb/repos.hb/macos/homebrew/packages/hb-bash-profile.tar.gz"
-	sha256 "c9399ea153479b384b2de68536d56cf28759901f1db8a20c37d95d5c300abbcb"
-	version "0.0.0"
-	revision 7
+	sha256 "951abe04f18f7a02d8fef1c1f733d83c6a2ec1e12bf548d0eadd7da4ddbb86d2"
+	version "0.0.1"
+#	revision 7
 
 	bottle :unneeded
 
@@ -22,15 +22,19 @@ class HbBashProfile < Formula
 		bin.write_exec_script Dir["#{libexec}/hb-bash-profile-la"]
 
 		if hbLogFolder.exist?
-			system "mkdir", "-p", "#{var}/log/hb" 
+			system "mkdir", "-p", "#{var}/log/hb"
+			system "chmod", "-R", "777", "#{var}/log/hb"
 		end 
 #		(prefix/"homebrew.mxcl.heron-ui.plist").write heron_ui_plist
 #		(prefix/"hb-bash-profile").chmod 0644
 	end
 
 	def caveats; <<~EOS
-		To create bash profilex
+		To create bash profile
 			brew services start hb-bash-profile
+			
+		To create bash profile for all users
+			brew services --lla start hb-bash-profile
 		EOS
 	end
 
@@ -45,7 +49,7 @@ class HbBashProfile < Formula
 				<string>#{plist_name}</string>
 				<key>ProgramArguments</key>
 				<array>
-					<string>#{libexec}/hb-bash-profile</string>
+					<string>#{libexec}/hb-bash-profile-lr</string>
 				</array>
 				<key>RunAtLoad</key>
 				<true/>
