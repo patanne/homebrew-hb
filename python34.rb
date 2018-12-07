@@ -85,7 +85,7 @@ class Python34 < Formula
       # The setup.py looks at "-isysroot" to get the sysroot (and not at --sysroot)
       cflags  << "-isysroot #{MacOS.sdk_path}"
       ldflags << "-isysroot #{MacOS.sdk_path}"
-      cflags  << "-I/usr/include" # find zlib
+#      cflags  << "-I/usr/include" # find zlib
       # For the Xlib.h, Python needs this header dir with the system Tk
       if build.without? "tcl-tk"
         # Yep, this needs the absolute path where zlib needed
