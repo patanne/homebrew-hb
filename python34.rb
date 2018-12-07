@@ -3,6 +3,7 @@ class Python34 < Formula
   homepage "https://www.python.org/"
   url "https://www.python.org/ftp/python/3.4.9/Python-3.4.9.tar.xz"
   sha256 "59629676ba2b01a798f5211d8f63c26ee52f1d5133cf37583e0bf1bad50c2bd9"
+  revision 1
 
   head do
     url "https://github.com/python/cpython.git"
