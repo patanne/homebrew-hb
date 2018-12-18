@@ -3,7 +3,7 @@ class Python36 < Formula
   homepage "https://www.python.org/"
   url "https://www.python.org/ftp/python/3.6.6/Python-3.6.6.tar.xz"
   sha256 "d79bc15d456e73a3173a2938f18a17e5149c850ebdedf84a78067f501ee6e16f"
-  revision 1
+  revision 2
 
   head do
     url "https://github.com/python/cpython.git"
@@ -77,8 +77,8 @@ class Python36 < Formula
 
     args << "--without-gcc" if ENV.compiler == :clang
 
-    cflags   = []
-    ldflags  = []
+    cflags   = ["-I/usr/local/opt/openssl/include"]
+    ldflags  = ["-L/usr/local/opt/openssl/lib"]
     cppflags = []
 
     if MacOS.sdk_path_if_needed
